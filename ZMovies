@@ -1,0 +1,67 @@
+/*###################################################################################################################3
+
+import java.util.*;
+public class MovieMain {
+	private Map<String, Float> movieDetailsMap;
+
+    public MovieMain() {
+        this.movieDetailsMap = new HashMap<>();
+    }
+
+    public Map<String, Float> getMovieDetailsMap() {
+        return movieDetailsMap;
+    }
+
+    public void setMovieDetailsMap(Map<String, Float> movieDetailsMap) {
+        this.movieDetailsMap = movieDetailsMap;
+    }
+
+    public float findMovieRating(String movieName) {
+        return movieDetailsMap.getOrDefault(movieName.toLowerCase(), -1f);
+    }
+
+    public List<String> findMoviesWithHighestRating() {
+        List<String> highestRatedMovies = new ArrayList<>();
+        for (Map.Entry<String, Float> entry : movieDetailsMap.entrySet()) {
+            if (entry.getValue() > 4) {
+                highestRatedMovies.add(entry.getKey());
+            }
+        }
+        return highestRatedMovies;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        MovieMain movieMain = new MovieMain();
+
+        System.out.println("Enter number of records to be added:");
+        int records = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < records; i++) {
+            System.out.println("Enter the Movie records (Movie Name : Rating):");
+            String[] movieRecord = scanner.nextLine().split(":");
+            movieMain.getMovieDetailsMap().put(movieRecord[0].toLowerCase(), Float.parseFloat(movieRecord[1]));
+        }
+
+        System.out.println("Enter the movie name needs to be searched");
+        String movieName = scanner.nextLine();
+        float rating = movieMain.findMovieRating(movieName);
+
+        if (rating == -1) {
+            System.out.println(movieName + " is an invalid movie name");
+        } else {
+            System.out.println(rating);
+        }
+
+        List<String> highestRatedMovies = movieMain.findMoviesWithHighestRating();
+        if (highestRatedMovies.isEmpty()) {
+            System.out.println("No movies were found with highest rating");
+        } else {
+            System.out.println("The names of the movies with the highest rating are:");
+            for (String movie : highestRatedMovies) {
+                System.out.println(movie);
+            }
+        }
+    }
+}
