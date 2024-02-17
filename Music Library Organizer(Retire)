@@ -1,0 +1,65 @@
+/*######################################################################################################*/
+
+import java.util.*;
+public class MusicalLibrary {
+	private Map<String, String> songMap;
+
+    public MusicalLibrary() {
+        this.songMap = new HashMap<>();
+    }
+
+    public void addSong(String songTitle, String artistName) {
+        this.songMap.put(songTitle, artistName);
+    }
+
+    public int getSongCountByArtistName(String artistName) {
+        int count = 0;
+        for (String artist : this.songMap.values()) {
+            if (artist.equalsIgnoreCase(artistName)) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public List<String> filterSongTitleByArtistName(String artistName) {
+        List<String> songs = new ArrayList<>();
+        for (Map.Entry<String, String> entry : this.songMap.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(artistName)) {
+                songs.add(entry.getKey());
+            }
+        }
+        return songs;
+    }
+
+    public static void main(String[] args) {
+        MusicalLibrary musicLibrary = new MusicalLibrary();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of music records to be added:");
+        int numberOfRecords = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < numberOfRecords; i++) {
+            System.out.println("Enter the music records (Song Title: Artist Name):");
+            String[] details = scanner.nextLine().split(":");
+            musicLibrary.addSong(details[0], details[1]);
+        }
+
+        System.out.println("Enter the artist name");
+        String artistName = scanner.nextLine();
+
+        int count = musicLibrary.getSongCountByArtistName(artistName);
+        System.out.println(count != 0 ? "The count of songs by " + artistName + " is " + count : "There are no songs by " + artistName + " in the library");
+
+        List<String> songs = musicLibrary.filterSongTitleByArtistName(artistName);
+        if (!songs.isEmpty()) {
+            System.out.println("The list of songs by " + artistName + " is:");
+            for (String song : songs) {
+                System.out.println(song);
+            }
+        } else {
+            System.out.println("No songs were found in the library");
+        }
+    }
+}
