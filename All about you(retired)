@@ -1,0 +1,60 @@
+/*#####################################################################################################*/
+
+import java.util.*;
+public class MemberMain {
+	private Map<String, String> memberMap;
+
+    public MemberMain() {
+        this.memberMap = new HashMap<>();
+    }
+
+    public void addMember(String memberId, String memberType) {
+        this.memberMap.put(memberId, memberType);
+    }
+
+    public String findMemberTypeOfGivenMemberId(String memberId) {
+        return this.memberMap.containsKey(memberId) ? this.memberMap.get(memberId) : "Invalid member id";
+    }
+
+    public List<String> findMemberIdsBasedOnTheMemberType(String memberType) {
+        List<String> members = new ArrayList<>();
+        for (Map.Entry<String, String> entry : this.memberMap.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(memberType)) {
+                members.add(entry.getKey());
+            }
+        }
+        return members;
+    }
+
+    public static void main(String[] args) {
+        MemberMain memberMain = new MemberMain();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of records to be added:");
+        int numberOfRecords = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < numberOfRecords; i++) {
+            System.out.println("Enter the details (Member id : Member type):");
+            String[] details = scanner.nextLine().split(":");
+            memberMain.addMember(details[0], details[1]);
+        }
+
+        System.out.println("Enter the member id to be searched");
+        String memberId = scanner.nextLine();
+        String memberType = memberMain.findMemberTypeOfGivenMemberId(memberId);
+        System.out.println(memberType.equals("Invalid member id") ? memberType : memberId + " is a " + memberType + " member");
+
+        System.out.println("Enter the member type to be searched");
+        String type = scanner.nextLine();
+        List<String> members = memberMain.findMemberIdsBasedOnTheMemberType(type);
+        if (!members.isEmpty()) {
+            System.out.println("Member ids of " + type + " members are");
+            for (String member : members) {
+                System.out.println(member);
+            }
+        } else {
+            System.out.println("No members were found for the given member type");
+        }
+    }
+}
