@@ -1,0 +1,89 @@
+/*##########################################################################################*/
+
+public class Insurance {
+	private String policyNumber;
+    private String insuranceProvider;
+    private double coverageAmount;
+    private String coverageType;
+    private int durationInYears;
+
+    public Insurance(String policyNumber, String insuranceProvider, double coverageAmount, String coverageType, int durationInYears) {
+        this.policyNumber = policyNumber;
+        this.insuranceProvider = insuranceProvider;
+        this.coverageAmount = coverageAmount;
+        this.coverageType = coverageType;
+        this.durationInYears = durationInYears;
+    }
+
+    public String getPolicyNumber() {
+        return policyNumber;
+    }
+
+    public String getInsuranceProvider() {
+        return insuranceProvider;
+    }
+
+    public double getCoverageAmount() {
+        return coverageAmount;
+    }
+
+    public String getCoverageType() {
+        return coverageType;
+    }
+
+    public int getDurationInYears() {
+        return durationInYears;
+    }
+
+    public double calculateMaturityAmount() {
+        if (coverageAmount <= 0) {
+            return -1;
+        }
+        if (durationInYears <= 0) {
+            return 1;
+        }
+        double maturityAmount = coverageAmount;
+        for (int i = 0; i < durationInYears; i++) {
+            maturityAmount += maturityAmount * 0.05;
+        }
+        return maturityAmount;
+    }
+}
+
+/*#########################################################################################################*/
+
+import java.util.*;
+public class UserInterface {
+	public static Insurance extractDetails(String insuranceDetails) {
+        String[] details = insuranceDetails.split(":");
+        String policyNumber = details[0];
+        String insuranceProvider = details[1];
+        double coverageAmount = Double.parseDouble(details[2]);
+        String coverageType = details[3];
+        int durationInYears = Integer.parseInt(details[4]);
+
+        return new Insurance(policyNumber, insuranceProvider, coverageAmount, coverageType, durationInYears);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the details");
+        String insuranceDetails = scanner.nextLine();
+        Insurance insurance = extractDetails(insuranceDetails);
+        double maturityAmount = insurance.calculateMaturityAmount();
+        if (maturityAmount == -1) {
+            System.out.println("Invalid details");
+            System.out.println("Explanation : As coverageAmount is invalid.");
+        } else if (maturityAmount == 1) {
+            System.out.println("Invalid details");
+            System.out.println("Explanation : As durationInYears is invalid.");
+        } else {
+            System.out.println("Policy Number: " + insurance.getPolicyNumber());
+            System.out.println("Insurance Provider: " + insurance.getInsuranceProvider());
+            System.out.println("Coverage Amount: " + insurance.getCoverageAmount());
+            System.out.println("Coverage Type: " + insurance.getCoverageType());
+            System.out.println("Duration in years: " + insurance.getDurationInYears());
+            System.out.println("Maturity Amount: " + maturityAmount);
+        }
+    }
+}
