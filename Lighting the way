@@ -1,0 +1,79 @@
+/*#############################################################################################################################*/
+
+
+public class LightHouse {
+	private String location;
+    private int height;
+    private String lightType;
+    private int hours;
+
+    public LightHouse(String location, int height, String lightType, int hours) {
+        this.location = location;
+        this.height = height;
+        this.lightType = lightType;
+        this.hours = hours;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public String getLightType() {
+        return lightType;
+    }
+
+    public int getHours() {
+        return hours;
+    }
+
+    public int calculateFlashesForGivenHours() {
+        if (height > 0 && hours > 0) {
+            return (hours * 60 * 60) / 72;
+        } else {
+            System.out.println("Invalid light house details");
+            return -1;
+        }
+    }
+}
+
+
+
+
+
+
+/*########################################################################################################################################*/
+
+
+
+
+
+package abc;
+import java.util.*;
+public class UserInterface {
+	public static LightHouse extractDetails(String lightHouseDetails) {
+        String[] details = lightHouseDetails.split(":");
+        String location = details[0];
+        int height = Integer.parseInt(details[1]);
+        String lightType = details[2];
+        int hours = Integer.parseInt(details[3]);
+
+        return new LightHouse(location, height, lightType, hours);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the details");
+        String input = scanner.nextLine();
+        LightHouse lighthouse = extractDetails(input);
+        System.out.println("LightHouse Location: " + lighthouse.getLocation());
+        System.out.println("Height: " + lighthouse.getHeight());
+        System.out.println("Light Type: " + lighthouse.getLightType());
+        System.out.println("Hour: " + lighthouse.getHours());
+        System.out.println("Flashes: " + lighthouse.calculateFlashesForGivenHours());
+    }
+}
+
