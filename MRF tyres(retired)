@@ -1,0 +1,66 @@
+/*#########################################################################################################*/
+
+import java.util.*;
+public class TyreMain {
+	private Map<String, String> tyreMap;
+
+    public TyreMain() {
+        this.tyreMap = new HashMap<>();
+    }
+
+    public void addOrder(String orderId, String tyreType) {
+        this.tyreMap.put(orderId, tyreType);
+    }
+
+    public int findCountOfOrderIdsBasedOnTheTyreType(String tyreType) {
+        int count = 0;
+        for (String type : this.tyreMap.values()) {
+            if (type.equalsIgnoreCase(tyreType)) {
+                count++;
+            }
+        }
+        return count > 0 ? count : -1;
+    }
+
+    public List<String> findOrderIdsBasedOnTheTyreType(String tyreType) {
+        List<String> orders = new ArrayList<>();
+        for (Map.Entry<String, String> entry : this.tyreMap.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(tyreType)) {
+                orders.add(entry.getKey());
+            }
+        }
+        return orders;
+    }
+
+    public static void main(String[] args) {
+        TyreMain tyreMain = new TyreMain();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of records to be added:");
+        int numberOfRecords = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < numberOfRecords; i++) {
+            System.out.println("Enter the records (Order Id: Tyre Type):");
+            String[] details = scanner.nextLine().split(":");
+            tyreMain.addOrder(details[0], details[1]);
+        }
+
+        System.out.println("Enter the Tyre type to be searched");
+        String tyreType = scanner.nextLine();
+        int count = tyreMain.findCountOfOrderIdsBasedOnTheTyreType(tyreType);
+        System.out.println(count != -1 ? "The Order Ids based on " + tyreType + " are " + count : "No Order Ids were found for " + tyreType);
+
+        System.out.println("Enter the Tyre type to identify the Order Ids");
+        String type = scanner.nextLine();
+        List<String> orders = tyreMain.findOrderIdsBasedOnTheTyreType(type);
+        if (!orders.isEmpty()) {
+            System.out.println("Order Ids based on the " + type + " are");
+            for (String order : orders) {
+                System.out.println(order);
+            }
+        } else {
+            System.out.println("No Order Ids were found for the " + type);
+        }
+    }
+}
