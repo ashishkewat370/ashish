@@ -1,0 +1,91 @@
+/*###############################################################################################################*/
+
+public class MobileInfo {
+	private String mobileName;
+    private String imeiNumber;
+    private String mobileBrand;
+    private double mobilePrice;
+
+    public MobileInfo(String mobileName, String imeiNumber, String mobileBrand, double mobilePrice) {
+        this.mobileName = mobileName;
+        this.imeiNumber = imeiNumber;
+        this.mobileBrand = mobileBrand;
+        this.mobilePrice = mobilePrice;
+    }
+
+    public String getMobileName() {
+        return mobileName;
+    }
+
+    public String getImeiNumber() {
+        return imeiNumber;
+    }
+
+    public String getMobileBrand() {
+        return mobileBrand;
+    }
+
+    public double getMobilePrice() {
+        return mobilePrice;
+    }
+
+    public double calculateMobilePriceToBePaid() {
+        if (imeiNumber.length() != 15 || mobilePrice <= 0) {
+            return -1;
+        }
+        double discount;
+        switch (mobileBrand) {
+            case "Samsung":
+                discount = 2;
+                break;
+            case "Realme":
+                discount = 6;
+                break;
+            case "OnePlus":
+                discount = 4;
+                break;
+            case "Oppo":
+                discount = 5;
+                break;
+            case "Vivo":
+                discount = 3;
+                break;
+            default:
+                return 1;
+        }
+        return mobilePrice - ((mobilePrice * discount) / 100);
+    }
+}
+
+
+/*##########################################################################################################################*/
+
+
+package abc;
+import java.util.*;
+public class UserInterface {
+	 public static MobileInfo extractDetails(String mobileDetails) {
+	        String[] details = mobileDetails.split(":");
+	        return new MobileInfo(details[0], details[1], details[2], Double.parseDouble(details[3]));
+	    }
+
+	    public static void main(String[] args) {
+	        Scanner scanner = new Scanner(System.in);
+	        System.out.println("Enter the Mobile details");
+	        String mobileDetails = scanner.nextLine();
+	        MobileInfo mobile = extractDetails(mobileDetails);
+	        System.out.println("Mobile Details");
+	        System.out.println("Mobile Name: " + mobile.getMobileName());
+	        System.out.println("Mobile IMEI Number: " + mobile.getImeiNumber());
+	        System.out.println("Mobile Brand: " + mobile.getMobileBrand());
+	        System.out.println("Mobile Price: " + mobile.getMobilePrice());
+	        double priceToBePaid = mobile.calculateMobilePriceToBePaid();
+	        if (priceToBePaid == -1) {
+	            System.out.println("Invalid Mobile details");
+	        } else if (priceToBePaid == 1) {
+	            System.out.println("Invalid Mobile Brand");
+	        } else {
+	            System.out.println("Amount to be paid: " + priceToBePaid);
+	        }
+	    }
+}
