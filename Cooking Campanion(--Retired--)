@@ -1,0 +1,78 @@
+/*#######################################################################*/
+
+import java.util.*;
+public class CookBookMain {
+	private Map<String, Integer> recipeMap;
+
+    // Getter and setter methods for the attribute
+    public Map<String, Integer> getRecipeMap() {
+        return recipeMap;
+    }
+
+    public void setRecipeMap(Map<String, Integer> recipeMap) {
+        this.recipeMap = recipeMap;
+    }
+
+    // Requirement 1: Count the number of recipeNames based on the given preparationTime
+    public int countRecipesUnderTime(int preparationTime) {
+        if (preparationTime <= 0) {
+            return -1;
+        }
+        int count = 0;
+        for (int time : recipeMap.values()) {
+            if (time <= preparationTime) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    // Requirement 2: Filter the recipeName based on the preparationTime
+    public List<String> getRecipesUnderTime(int preparationTime) {
+        List<String> recipes = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : recipeMap.entrySet()) {
+            if (entry.getValue() <= preparationTime) {
+                recipes.add(entry.getKey());
+            }
+        }
+        return recipes;
+    }
+
+    public static void main(String[] args) {
+        CookBookMain cookBookMain = new CookBookMain();
+        Map<String, Integer> recipeMap = new HashMap<>();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of recipes to be added:");
+        int records = scanner.nextInt();
+        scanner.nextLine(); // consume newline left-over
+
+        System.out.println("Enter the recipe (Recipe name : Preparation time):");
+        for (int i = 0; i < records; i++) {
+            String[] details = scanner.nextLine().split(":");
+            String recipeName = details[0];
+            int preparationTime = Integer.parseInt(details[1]);
+            recipeMap.put(recipeName, preparationTime);
+        }
+
+        cookBookMain.setRecipeMap(recipeMap);
+
+        System.out.println("Enter the Preparation time to be searched:");
+        int preparationTime = scanner.nextInt();
+        int count = cookBookMain.countRecipesUnderTime(preparationTime);
+        if (count != -1) {
+            System.out.println("The Recipes with preparation time less than " + preparationTime + " minutes are " + count);
+        } else {
+            System.out.println("No recipes were found with preparation time less than " + preparationTime + " minutes");
+        }
+
+        System.out.println("Enter the Preparation time to identify the Recipe Names:");
+        preparationTime = scanner.nextInt();
+        List<String> recipes = cookBookMain.getRecipesUnderTime(preparationTime);
+        if (!recipes.isEmpty()) {
+            System.out.println("Recipes with preparation time less than " + preparationTime + " minutes are " + String.join(", ", recipes));
+        } else {
+            System.out.println("No Recipes were found for " + preparationTime + " minutes");
+        }
+    }
+}
