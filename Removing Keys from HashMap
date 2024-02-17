@@ -1,0 +1,26 @@
+/*#######################################################################*/
+
+import java.util.*;
+public class UserMainCode {
+	static int sizeOfResultandHashMap(HashMap<Integer, String> map) {
+        map.entrySet().removeIf(entry -> entry.getKey() % 4 == 0);
+        return map.size();
+    }
+}
+
+
+
+public class Main {
+	public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        HashMap<Integer, String> map = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            int key = scanner.nextInt();
+            String value = scanner.next();
+            map.put(key, value);
+        }
+        int size = UserMainCode.sizeOfResultandHashMap(map);
+        System.out.println(size);
+    }
+}
