@@ -1,0 +1,30 @@
+/*###############################################################################################################*/
+
+import java.util.*;
+public class Main {
+	public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the sentence:");
+        String sentence = scanner.nextLine();
+        System.out.println("Enter the word to count:");
+        String word = scanner.nextLine();
+        int count = UserMainCode.countWords(sentence, word);
+        System.out.println("The word '" + word + "' appears " + count + " times in the sentence.");
+    }
+}
+
+
+/*################################################################################################################*/
+
+public class UserMainCode {
+	static int countWords(String sentence, String word) {
+        String[] words = sentence.split(" ");
+        int count = 0;
+        for (String w : words) {
+            if (w.equals(word)) {
+                count++;
+            }
+        }
+        return count;
+    }
+}
