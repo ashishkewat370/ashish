@@ -1,0 +1,32 @@
+/*########################################################*/
+
+import java.util.*;
+public class UserMainCode {
+	static int getLargestSpan(int[] arr) {
+        HashMap<Integer, Integer> map = new HashMap<>();
+        int maxSpan = 0;
+        for (int i = 0; i < arr.length; i++) {
+            if (!map.containsKey(arr[i])) {
+                map.put(arr[i], i);
+            } else {
+                int span = i - map.get(arr[i]) + 1;
+                maxSpan = Math.max(maxSpan, span);
+            }
+        }
+        return maxSpan;
+    }
+}
+
+// if errors occuring then use import java.util.*; otherwise leave it
+public class Main {
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+        int n = scanner.nextInt();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = scanner.nextInt();
+        }
+        int span = UserMainCode.getLargestSpan(arr);
+        System.out.println(span);
+    }
+}
