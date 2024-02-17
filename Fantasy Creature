@@ -1,0 +1,71 @@
+/*#####################################################################################################*/
+
+import java.util.*;
+public class FantasyCreature {
+	private Map<String, Integer> fantasyCreatureMap;
+
+    // Getter and setter methods for the attribute
+    public Map<String, Integer> getFantasyCreatureMap() {
+        return fantasyCreatureMap;
+    }
+
+    public void setFantasyCreatureMap(Map<String, Integer> fantasyCreatureMap) {
+        this.fantasyCreatureMap = fantasyCreatureMap;
+    }
+
+    // Requirement 1: Find the hit points of the creature based on the given creature name
+    public int findTheHitPointsForTheGivenCreature(String creature) {
+        if (fantasyCreatureMap.containsKey(creature)) {
+            return fantasyCreatureMap.get(creature);
+        } else {
+            return -1;
+        }
+    }
+
+    // Requirement 2: Filter the creatures based on the hit points
+    public List<String> findTheCreatureNamesBasedOnTheHitpoints() {
+        List<String> creatures = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : fantasyCreatureMap.entrySet()) {
+            if (entry.getValue() >= 80) {
+                creatures.add(entry.getKey());
+            }
+        }
+        return creatures;
+    }
+
+    public static void main(String[] args) {
+        FantasyCreature fantasyCreature = new FantasyCreature();
+        Map<String, Integer> fantasyCreatureMap = new HashMap<>();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of creatures to be added:");
+        int records = scanner.nextInt();
+        scanner.nextLine(); // consume newline left-over
+
+        System.out.println("Enter the creatures (CreatureName: HitPoints):");
+        for (int i = 0; i < records; i++) {
+            String[] details = scanner.nextLine().split(":");
+            String creatureName = details[0];
+            int hitPoints = Integer.parseInt(details[1]);
+            fantasyCreatureMap.put(creatureName, hitPoints);
+        }
+
+        fantasyCreature.setFantasyCreatureMap(fantasyCreatureMap);
+
+        System.out.println("Enter the fantasy creature name:");
+        String creatureName = scanner.nextLine();
+        int hitPoints = fantasyCreature.findTheHitPointsForTheGivenCreature(creatureName);
+        if (hitPoints != -1) {
+            System.out.println("The Hit Points for the " + creatureName + " is " + hitPoints);
+        } else {
+            System.out.println("No fantasy creature were found");
+        }
+
+        List<String> creatures = fantasyCreature.findTheCreatureNamesBasedOnTheHitpoints();
+        if (!creatures.isEmpty()) {
+            System.out.println("Fantasy Creatures based on the condition are " + String.join(", ", creatures));
+        } else {
+            System.out.println("No fantasy creature were found for the given condition");
+        }
+    }
+}
