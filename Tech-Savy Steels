@@ -1,0 +1,75 @@
+/*#############################################################################################*/
+
+import java.util.*;
+public class SteelMain {
+	private Map<String, String> steelMap;
+
+    // Getter and setter methods for the attribute
+    public Map<String, String> getSteelMap() {
+        return steelMap;
+    }
+
+    public void setSteelMap(Map<String, String> steelMap) {
+        this.steelMap = steelMap;
+    }
+
+    // Requirement 1: Find the number of orderIds based on the given steelType
+    public int findCountOfOrderIdsBasedOnTheSteelType(String steelType) {
+        int count = 0;
+        for (String type : steelMap.values()) {
+            if (type.equalsIgnoreCase(steelType)) {
+                count++;
+            }
+        }
+        return count > 0 ? count : -1;
+    }
+
+    // Requirement 2: Filter the orderIds based on the steelType
+    public List<String> findOrderIdsBasedOnTheSteelType(String steelType) {
+        List<String> orderIds = new ArrayList<>();
+        for (Map.Entry<String, String> entry : steelMap.entrySet()) {
+            if (entry.getValue().equalsIgnoreCase(steelType)) {
+                orderIds.add(entry.getKey());
+            }
+        }
+        return orderIds;
+    }
+
+    public static void main(String[] args) {
+        SteelMain steelMain = new SteelMain();
+        Map<String, String> steelMap = new HashMap<>();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of records to be added:");
+        int records = scanner.nextInt();
+        scanner.nextLine(); // consume newline left-over
+
+        System.out.println("Enter the records (Order Id: Steel Type):");
+        for (int i = 0; i < records; i++) {
+            String[] details = scanner.nextLine().split(":");
+            String orderId = details[0];
+            String steelType = details[1];
+            steelMap.put(orderId, steelType);
+        }
+
+        steelMain.setSteelMap(steelMap);
+
+        System.out.println("Enter the Steel type to be searched:");
+        String steelType = scanner.nextLine();
+        int count = steelMain.findCountOfOrderIdsBasedOnTheSteelType(steelType);
+        if (count != -1) {
+            System.out.println("The Order Ids based on " + steelType + " are " + count);
+        } else {
+            System.out.println("No Order Ids were found for " + steelType);
+        }
+
+        System.out.println("Enter the Steel type to identify the Order Ids:");
+        steelType = scanner.nextLine();
+        List<String> orderIds = steelMain.findOrderIdsBasedOnTheSteelType(steelType);
+        if (!orderIds.isEmpty()) {
+            System.out.println("Order Ids based on the " + steelType + " are " + String.join(", ", orderIds));
+        } else {
+            System.out.println("No Order Ids were found for the " + steelType);
+        }
+    }
+}
