@@ -1,0 +1,63 @@
+/*#########################################################################################################*/
+
+import java.util.*;
+	public class ParticipantInfo {
+	    private Map<String, Integer> participantMap;
+
+	    public ParticipantInfo() {
+	        this.participantMap = new HashMap<>();
+	    }
+
+	    public void addParticipant(String name, int iqLevel) {
+	        this.participantMap.put(name.toLowerCase(), iqLevel);
+	    }
+
+	    public int findTheIQLevelforGivenParticipantName(String participantName) {
+	        return this.participantMap.getOrDefault(participantName.toLowerCase(), -1);
+	    }
+
+	    public List<String> findTheHighestIQLevel() {
+	        List<String> highestIQParticipants = new ArrayList<>();
+	        int maxIQ = Collections.max(this.participantMap.values());
+
+	        for (Map.Entry<String, Integer> entry : this.participantMap.entrySet()) {
+	            if (entry.getValue() == maxIQ) {
+	                highestIQParticipants.add(entry.getKey());
+	            }
+	        }
+
+	        return highestIQParticipants;
+	    }
+
+	    public static void main(String[] args) {
+	        Scanner sc = new Scanner(System.in);
+	        ParticipantInfo participantInfo = new ParticipantInfo();
+
+	        System.out.println("Enter number of records to be added:");
+	        int records = sc.nextInt();
+	        sc.nextLine();
+
+	        System.out.println("Enter the participant records (Participant name:IQ level):");
+	        for (int i = 0; i < records; i++) {
+	            String[] record = sc.nextLine().split(":");
+	            participantInfo.addParticipant(record[0], Integer.parseInt(record[1]));
+	        }
+
+	        System.out.println("Enter the participant name to be searched");
+	        String name = sc.nextLine();
+	        int iqLevel = participantInfo.findTheIQLevelforGivenParticipantName(name);
+
+	        if (iqLevel == -1) {
+	            System.out.println(name + " is an invalid participant name");
+	        } else {
+	            System.out.println(iqLevel);
+	        }
+
+	        System.out.println("Participant name with the highest IQ level are:");
+	        List<String> highestIQParticipants = participantInfo.findTheHighestIQLevel();
+	        for (String participant : highestIQParticipants) {
+	            System.out.println(participant);
+	        }
+	    }
+	}
+
