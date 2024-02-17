@@ -1,0 +1,69 @@
+/*########################################################################################################*/
+
+import java.util.*;
+public class TrekkingDetailsMain {
+	private Map<String, Integer> detailsMap;
+
+    public TrekkingDetailsMain() {
+        this.detailsMap = new HashMap<>();
+    }
+
+    public void addMountain(String mountainName, int peakPoint) {
+        this.detailsMap.put(mountainName, peakPoint);
+    }
+
+    public int findCountOfMountainsBasedOnThePeakPoint(int minimumPeak, int maximumPeak) {
+        int count = 0;
+        for (Integer peakPoint : this.detailsMap.values()) {
+            if (peakPoint >= minimumPeak && peakPoint <= maximumPeak) {
+                count++;
+            }
+        }
+        return count > 0 ? count : -1;
+    }
+
+    public List<String> findMountainsBasedOnPeakPoint(int peakPoint) {
+        List<String> mountains = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : this.detailsMap.entrySet()) {
+            if (entry.getValue() <= peakPoint) {
+                mountains.add(entry.getKey());
+            }
+        }
+        return mountains;
+    }
+
+    public static void main(String[] args) {
+        TrekkingDetailsMain trekkingDetails = new TrekkingDetailsMain();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of details to be added");
+        int numberOfDetails = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < numberOfDetails; i++) {
+            System.out.println("Enter the details (Mountain name: Peak point)");
+            String[] details = scanner.nextLine().split(":");
+            trekkingDetails.addMountain(details[0], Integer.parseInt(details[1]));
+        }
+
+        System.out.println("Enter the minimum and maximum peak points");
+        int minPeak = scanner.nextInt();
+        int maxPeak = scanner.nextInt();
+
+        int count = trekkingDetails.findCountOfMountainsBasedOnThePeakPoint(minPeak, maxPeak);
+        System.out.println(count != -1 ? "The total count of mountains are " + count : "No mountains were found");
+
+        System.out.println("Enter the peak point to be searched");
+        int peakPoint = scanner.nextInt();
+
+        List<String> mountains = trekkingDetails.findMountainsBasedOnPeakPoint(peakPoint);
+        if (!mountains.isEmpty()) {
+            System.out.println("Mountains based on the condition are");
+            for (String mountain : mountains) {
+                System.out.println(mountain);
+            }
+        } else {
+            System.out.println("No Mountains were found");
+        }
+    }
+}
