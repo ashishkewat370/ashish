@@ -1,0 +1,67 @@
+package abc;
+import java.util.*;
+public class ParticipantInfo {
+	private Map<String, Integer> participantMap;
+
+    public ParticipantInfo() {
+        this.participantMap = new HashMap<>();
+    }
+
+    public Map<String, Integer> getParticipantMap() {
+        return participantMap;
+    }
+
+    public void setParticipantMap(Map<String, Integer> participantMap) {
+        this.participantMap = participantMap;
+    }
+
+    public int findTheTimeTakenByTheParticipant(String participantName) {
+        return participantMap.getOrDefault(participantName.toLowerCase(), -1);
+    }
+
+    public List<String> findTheParticipantWithTheShortestTime() {
+        List<String> shortestTimeParticipants = new ArrayList<>();
+        int shortestTime = Collections.min(participantMap.values());
+        for (Map.Entry<String, Integer> entry : participantMap.entrySet()) {
+            if (entry.getValue() == shortestTime) {
+                shortestTimeParticipants.add(entry.getKey());
+            }
+        }
+        return shortestTimeParticipants;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ParticipantInfo participantInfo = new ParticipantInfo();
+
+        System.out.println("Enter number of records to be added:");
+        int records = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < records; i++) {
+            System.out.println("Enter the participant records (Participant name:TimeTaken in seconds):");
+            String[] participantRecord = scanner.nextLine().split(":");
+            participantInfo.getParticipantMap().put(participantRecord[0].toLowerCase(), Integer.parseInt(participantRecord[1]));
+        }
+
+        System.out.println("Enter the participant name to be searched");
+        String participantName = scanner.nextLine();
+        int timeTaken = participantInfo.findTheTimeTakenByTheParticipant(participantName);
+
+        if (timeTaken == -1) {
+            System.out.println(participantName + " is an invalid participant name");
+        } else {
+            System.out.println(timeTaken);
+        }
+
+        List<String> shortestTimeParticipants = participantInfo.findTheParticipantWithTheShortestTime();
+        if (shortestTimeParticipants.isEmpty()) {
+            System.out.println("No participants were found with the shortest time");
+        } else {
+            System.out.println("Participant name with the shortest time taken:");
+            for (String participant : shortestTimeParticipants) {
+                System.out.println(participant);
+            }
+        }
+    }
+}
