@@ -1,0 +1,72 @@
+/*######################################################################################################*/
+
+import java.util.*;
+public class AspirantMain {
+
+	private Map<String, Double> aspirantMap;
+
+    // Getter and setter methods for the attribute
+    public Map<String, Double> getAspirantMap() {
+        return aspirantMap;
+    }
+
+    public void setAspirantMap(Map<String, Double> aspirantMap) {
+        this.aspirantMap = aspirantMap;
+    }
+
+    // Requirement 1: Find the mark scored by the given aspirant based on the rollNumber
+    public double findAspirantMark(String rollNumber) {
+        if (aspirantMap.containsKey(rollNumber)) {
+            return aspirantMap.get(rollNumber);
+        } else {
+            return -1;
+        }
+    }
+
+    // Requirement 2: Filter the aspirants selected for super batch
+    public List<String> findAspirantsSelectedForTheSuperBatch() {
+        List<String> selectedAspirants = new ArrayList<>();
+        for (Map.Entry<String, Double> entry : aspirantMap.entrySet()) {
+            if (entry.getValue() >= 80) {
+                selectedAspirants.add(entry.getKey());
+            }
+        }
+        return selectedAspirants;
+    }
+
+    public static void main(String[] args) {
+        AspirantMain aspirantMain = new AspirantMain();
+        Map<String, Double> aspirantMap = new HashMap<>();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of records to be added:");
+        int records = scanner.nextInt();
+        scanner.nextLine(); // consume newline left-over
+
+        System.out.println("Enter the details (Roll number : mark scored):");
+        for (int i = 0; i < records; i++) {
+            String[] details = scanner.nextLine().split(":");
+            String rollNumber = details[0];
+            double markScored = Double.parseDouble(details[1]);
+            aspirantMap.put(rollNumber, markScored);
+        }
+
+        aspirantMain.setAspirantMap(aspirantMap);
+
+        System.out.println("Enter the roll number to be searched");
+        String rollNumber = scanner.nextLine();
+        double mark = aspirantMain.findAspirantMark(rollNumber);
+        if (mark != -1) {
+            System.out.println("Mark scored by the aspirant " + rollNumber + " is " + mark);
+        } else {
+            System.out.println(rollNumber + " is an invalid roll number");
+        }
+
+        List<String> selectedAspirants = aspirantMain.findAspirantsSelectedForTheSuperBatch();
+        if (!selectedAspirants.isEmpty()) {
+            System.out.println("Aspirants selected for the super batch are " + selectedAspirants);
+        } else {
+            System.out.println("None of the aspirants were selected for super batch");
+        }
+    }
+}
