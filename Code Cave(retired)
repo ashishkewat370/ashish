@@ -1,0 +1,58 @@
+/*#################################################################################################*/
+
+import java.util.*;
+public class TrainerMain {
+	private Map<String, Float> trainerMap;
+
+    public TrainerMain() {
+        this.trainerMap = new HashMap<>();
+    }
+
+    public void addTrainer(String trainerId, float performanceRating) {
+        this.trainerMap.put(trainerId, performanceRating);
+    }
+
+    public float findPerformanceRatingOfGivenTrainerId(String trainerId) {
+        return this.trainerMap.containsKey(trainerId) ? this.trainerMap.get(trainerId) : -1;
+    }
+
+    public List<String> findTrainerIdsWithLowPerformanceRating() {
+        List<String> trainers = new ArrayList<>();
+        for (Map.Entry<String, Float> entry : this.trainerMap.entrySet()) {
+            if (entry.getValue() <= 3) {
+                trainers.add(entry.getKey());
+            }
+        }
+        return trainers;
+    }
+
+    public static void main(String[] args) {
+        TrainerMain trainerMain = new TrainerMain();
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter number of records to be added:");
+        int numberOfRecords = scanner.nextInt();
+        scanner.nextLine();
+
+        for (int i = 0; i < numberOfRecords; i++) {
+            System.out.println("Enter the trainer records (Trainer id : Performance rating):");
+            String[] details = scanner.nextLine().split(":");
+            trainerMain.addTrainer(details[0], Float.parseFloat(details[1]));
+        }
+
+        System.out.println("Enter the trainer id to be searched");
+        String trainerId = scanner.nextLine();
+        float performanceRating = trainerMain.findPerformanceRatingOfGivenTrainerId(trainerId);
+        System.out.println(performanceRating != -1 ? "Performance rating of trainer id " + trainerId + " is " + performanceRating : trainerId + " is an invalid trainer id");
+
+        List<String> trainers = trainerMain.findTrainerIdsWithLowPerformanceRating();
+        if (!trainers.isEmpty()) {
+            System.out.println("Trainer id of the trainers with low rating are:");
+            for (String trainer : trainers) {
+                System.out.println(trainer);
+            }
+        } else {
+            System.out.println("No trainers have a low rating");
+        }
+    }
+}
