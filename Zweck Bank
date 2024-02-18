@@ -1,0 +1,115 @@
+/*########################################################################################################*/
+
+public class DepositorInfo {
+	private String accountNumber;
+    private String depositType;
+    private int noOfYears;
+    private double depositAmount;
+
+    public DepositorInfo(String accountNumber, String depositType, int noOfYears, double depositAmount) {
+        this.accountNumber = accountNumber;
+        this.depositType = depositType;
+        this.noOfYears = noOfYears;
+        this.depositAmount = depositAmount;
+    }
+
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
+    }
+
+    public String getDepositType() {
+        return depositType;
+    }
+
+    public void setDepositType(String depositType) {
+        this.depositType = depositType;
+    }
+
+    public int getNoOfYears() {
+        return noOfYears;
+    }
+
+    public void setNoOfYears(int noOfYears) {
+        this.noOfYears = noOfYears;
+    }
+
+    public double getDepositAmount() {
+        return depositAmount;
+    }
+
+    public void setDepositAmount(double depositAmount) {
+        this.depositAmount = depositAmount;
+    }
+
+    public double calculateTotalAmountOfReturns() {
+        if (depositAmount <= 0 || noOfYears <= 0) {
+            return -1;
+        }
+
+        double rateOfInterest;
+        switch (depositType.toLowerCase()) {
+            case "savings":
+                rateOfInterest = 0.05;
+                break;
+            case "fixeddeposit":
+                rateOfInterest = 0.10;
+                break;
+            case "recurringdeposit":
+                rateOfInterest = 0.15;
+                break;
+            case "specialpurposedeposit":
+                rateOfInterest = 0.20;
+                break;
+            default:
+                return -1;
+        }
+
+        return (depositAmount + depositAmount * rateOfInterest) * noOfYears;
+    }
+}
+
+
+/*##########################################################################################################*/
+
+import java.util.*;
+public class UserInterface {
+	public static DepositorInfo extractDetails(String depositorDetails) {
+        String[] details = depositorDetails.split(":");
+        if (details.length != 4) {
+            return null;
+        }
+
+        String accountNumber = details[0];
+        String depositType = details[1];
+        int noOfYears = Integer.parseInt(details[2]);
+        double depositAmount = Double.parseDouble(details[3]);
+
+        return new DepositorInfo(accountNumber, depositType, noOfYears, depositAmount);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the Depositor details");
+        String depositorDetails = scanner.nextLine();
+        DepositorInfo depositorInfo = extractDetails(depositorDetails);
+        if (depositorInfo == null) {
+            System.out.println("Invalid Depositor details");
+            return;
+        }
+        double totalAmountOfReturns = depositorInfo.calculateTotalAmountOfReturns();
+        if (totalAmountOfReturns == -1) {
+            System.out.println("Invalid input");
+            return;
+        }
+        System.out.println("Depositor Details");
+        System.out.println("AccountNumber : " + depositorInfo.getAccountNumber());
+        System.out.println("Deposit Type : " + depositorInfo.getDepositType());
+        System.out.println("Number of years : " + depositorInfo.getNoOfYears());
+        System.out.println("Deposit Amount : " + depositorInfo.getDepositAmount());
+        System.out.println("Total Amount Of Returns : " + totalAmountOfReturns);
+    }
+}
