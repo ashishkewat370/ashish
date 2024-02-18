@@ -1,0 +1,127 @@
+/*#####################################################################################################*/
+
+
+public class StatueInfo {
+	private String statueName;
+    private String origin;
+    private String carvingType;
+    private double price;
+
+    public StatueInfo(String statueName, String origin, String carvingType, double price) {
+        this.statueName = statueName;
+        this.origin = origin;
+        this.carvingType = carvingType;
+        this.price = price;
+    }
+
+    public String getStatueName() {
+        return statueName;
+    }
+
+    public void setStatueName(String statueName) {
+        this.statueName = statueName;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getCarvingType() {
+        return carvingType;
+    }
+
+    public void setCarvingType(String carvingType) {
+        this.carvingType = carvingType;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public double calculateTotalStatuePrice(int quantity) {
+        if (quantity <= 0 || price <= 0) {
+            return -1;
+        }
+
+        double tax;
+        switch (carvingType) {
+            case "Wood Carving":
+                tax = 0.02;
+                break;
+            case "Ceramic Figurine":
+                tax = 0.05;
+                break;
+            case "Bronze Sculpture":
+                tax = 0.06;
+                break;
+            case "Stone Carving":
+                tax = 0.04;
+                break;
+            case "Wire Art Sculpture":
+                tax = 0.03;
+                break;
+            default:
+                return -1;
+        }
+
+        return quantity * (price + (price * tax));
+    }
+}
+
+
+/*##########################################################################################################*/
+
+
+import java.util.*;
+public class UserInterface {
+	public static StatueInfo extractDetails(String statueDetails) {
+        String[] details = statueDetails.split(":");
+        if (details.length != 4) {
+            return null;
+        }
+
+        String statueName = details[0];
+        String origin = details[1];
+        String carvingType = details[2];
+        double price;
+        try {
+            price = Double.parseDouble(details[3]);
+        } catch (NumberFormatException e) {
+            return null;
+        }
+
+        return new StatueInfo(statueName, origin, carvingType, price);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the Statue details");
+        String statueDetails = scanner.nextLine();
+        StatueInfo statueInfo = extractDetails(statueDetails);
+        if (statueInfo == null) {
+            System.out.println("Invalid Statue details");
+            return;
+        }
+        System.out.println("Enter the Quantity");
+        int quantity = scanner.nextInt();
+        double totalStatuePrice = statueInfo.calculateTotalStatuePrice(quantity);
+        if (totalStatuePrice == -1) {
+            System.out.println("Invalid input");
+            return;
+        }
+        System.out.println("Statue Details");
+        System.out.println("Statue Name: " + statueInfo.getStatueName());
+        System.out.println("Statue Origin: " + statueInfo.getOrigin());
+        System.out.println("Statue carving type: " + statueInfo.getCarvingType());
+        System.out.println("Statue Price: $." + statueInfo.getPrice());
+        System.out.println("Total Statue Price to be paid: $." + totalStatuePrice);
+    }
+}
