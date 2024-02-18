@@ -1,0 +1,103 @@
+/*##################################################################################*/
+
+import java.util.*;
+public class Lock {
+	private String lockModel;
+    private int codeLength;
+    private int[] code;
+    private String lockState;
+
+    public Lock(String lockModel, int codeLength, int[] code, String lockState) {
+        this.lockModel = lockModel;
+        this.codeLength = codeLength;
+        this.code = code;
+        this.lockState = lockState;
+    }
+
+    public String getLockModel() {
+        return lockModel;
+    }
+
+    public void setLockModel(String lockModel) {
+        this.lockModel = lockModel;
+    }
+
+    public int getCodeLength() {
+        return codeLength;
+    }
+
+    public void setCodeLength(int codeLength) {
+        this.codeLength = codeLength;
+    }
+
+    public int[] getCode() {
+        return code;
+    }
+
+    public void setCode(int[] code) {
+        this.code = code;
+    }
+
+    public String getLockState() {
+        return lockState;
+    }
+
+    public void setLockState(String lockState) {
+        this.lockState = lockState;
+    }
+
+    public String enterCodeToUnlock(int[] codeAttempts) {
+        if (lockState.equalsIgnoreCase("unlocked")) {
+            return "Lock is already unlocked.";
+        } else if (Arrays.equals(code, codeAttempts)) {
+            lockState = "Unlocked";
+            return "Code correct. Lock is now unlocked.";
+        } else {
+            return "Incorrect code. Please try again.";
+        }
+    }
+}
+
+
+/*##########################################################################################*/
+
+import java.util.*;
+public class UserInterface {
+	public static Lock extractDetails(String lockDetails) {
+        String[] details = lockDetails.split(":");
+        if (details.length < 4) {
+            return null;
+        }
+
+        String lockModel = details[0];
+        int codeLength = Integer.parseInt(details[1]);
+        int[] code = new int[codeLength];
+        for (int i = 0; i < codeLength; i++) {
+            code[i] = Integer.parseInt(details[i + 2]);
+        }
+        String lockState = details[details.length - 1];
+
+        return new Lock(lockModel, codeLength, code, lockState);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter the details");
+        String lockDetails = scanner.nextLine();
+        Lock lock = extractDetails(lockDetails);
+        if (lock == null) {
+            System.out.println("Invalid lock details");
+            return;
+        }
+        System.out.println("Enter the code attempts of length " + lock.getCodeLength());
+        int[] codeAttempts = new int[lock.getCodeLength()];
+        for (int i = 0; i < lock.getCodeLength(); i++) {
+            codeAttempts[i] = scanner.nextInt();
+        }
+        String result = lock.enterCodeToUnlock(codeAttempts);
+        System.out.println("Lock Model: " + lock.getLockModel());
+        System.out.println("Code Length: " + lock.getCodeLength());
+        System.out.println("Lock State " + lock.getLockState());
+        System.out.println(result);
+    }
+}
