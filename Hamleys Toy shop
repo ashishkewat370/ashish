@@ -1,0 +1,72 @@
+/*####################################################################################*/
+
+import java.util.*;
+public class ToyOrderMain {
+	private Map<String, Integer> toyMap;
+
+    public ToyOrderMain() {
+        this.toyMap = new HashMap<>();
+    }
+
+    public Map<String, Integer> getToyMap() {
+        return toyMap;
+    }
+
+    public void setToyMap(Map<String, Integer> toyMap) {
+        this.toyMap = toyMap;
+    }
+
+    public int findQuantity(String toyName) {
+        if (toyMap.containsKey(toyName.toLowerCase())) {
+            return toyMap.get(toyName.toLowerCase());
+        } else {
+            return -1;
+        }
+    }
+
+    public List<String> findToysBasedOnTheGivenQuantity(int quantity) {
+        List<String> filteredToys = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : toyMap.entrySet()) {
+            if (entry.getValue() <= quantity) {
+                filteredToys.add(entry.getKey());
+            }
+        }
+        return filteredToys;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        ToyOrderMain toyOrderMain = new ToyOrderMain();
+
+        System.out.println("Enter number of records to be added");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter the toy details(toyName: quantity)");
+            String[] details = scanner.nextLine().split(":");
+            toyOrderMain.getToyMap().put(details[0].toLowerCase(), Integer.parseInt(details[1]));
+        }
+
+        System.out.println("Enter the toy name to be searched");
+        String toyName = scanner.nextLine();
+        int quantity = toyOrderMain.findQuantity(toyName);
+        if (quantity == -1) {
+            System.out.println(toyName + " is an invalid toy name");
+        } else {
+            System.out.println("Order placed for " + quantity + " " + toyName);
+        }
+
+        System.out.println("Enter the quantity to filter the toys");
+        int filterQuantity = scanner.nextInt();
+        List<String> filteredToys = toyOrderMain.findToysBasedOnTheGivenQuantity(filterQuantity);
+        if (filteredToys.isEmpty()) {
+            System.out.println("No toys were found for the given quantity");
+        } else {
+            System.out.println("Toys that will be delivered on the same day are");
+            for (String toy : filteredToys) {
+                System.out.println(toy);
+            }
+        }
+    }
+}
