@@ -1,0 +1,74 @@
+/*##########################################################################################*/
+
+import java.util.*;
+public class IceCreamInfo {
+	private Map<String, Integer> IceCreamMap;
+
+    public IceCreamInfo() {
+        this.IceCreamMap = new HashMap<>();
+    }
+
+    public Map<String, Integer> getIceCreamMap() {
+        return IceCreamMap;
+    }
+
+    public void setIceCreamMap(Map<String, Integer> iceCreamMap) {
+        IceCreamMap = iceCreamMap;
+    }
+
+    public List<String> filterIceCreamDetailsForGivenPriceRange(int start, int end) {
+        List<String> filteredIceCreams = new ArrayList<>();
+        for (Map.Entry<String, Integer> entry : IceCreamMap.entrySet()) {
+            if (entry.getValue() > start && entry.getValue() < end) {
+                filteredIceCreams.add(entry.getKey());
+            }
+        }
+        return filteredIceCreams;
+    }
+
+    public Map<String, Integer> findTheCheapestIceCream() {
+        Map<String, Integer> cheapestIceCream = new HashMap<>();
+        int minPrice = Collections.min(IceCreamMap.values());
+        for (Map.Entry<String, Integer> entry : IceCreamMap.entrySet()) {
+            if (entry.getValue() == minPrice) {
+                cheapestIceCream.put(entry.getKey(), entry.getValue());
+            }
+        }
+        return cheapestIceCream;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        IceCreamInfo iceCreamInfo = new IceCreamInfo();
+
+        System.out.println("Enter the number of IceCream details to be added");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter the IceCream details(IceCreamName:Price)");
+            String[] details = scanner.nextLine().split(":");
+            iceCreamInfo.getIceCreamMap().put(details[0], Integer.parseInt(details[1]));
+        }
+
+        System.out.println("Enter a range to filter the IceCream details.");
+        int start = scanner.nextInt();
+        int end = scanner.nextInt();
+
+        List<String> filteredIceCreams = iceCreamInfo.filterIceCreamDetailsForGivenPriceRange(start, end);
+        if (filteredIceCreams.isEmpty()) {
+            System.out.println("No IceCream available within the price range $." + start + " and $." + end);
+        } else {
+            System.out.println("IceCream available within the price range $." + start + " and $." + end + " are");
+            for (String iceCream : filteredIceCreams) {
+                System.out.println(iceCream);
+            }
+        }
+
+        Map<String, Integer> cheapestIceCream = iceCreamInfo.findTheCheapestIceCream();
+        for (Map.Entry<String, Integer> entry : cheapestIceCream.entrySet()) {
+            System.out.println("The IceCream with the lowest price is");
+            System.out.println(entry.getKey() + " - $." + entry.getValue());
+        }
+    }
+}
