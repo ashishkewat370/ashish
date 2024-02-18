@@ -1,0 +1,68 @@
+/*#############################################################################*/
+
+import java.util.*;
+public class MilkShakeInfo {
+	private Map<String, Double> shakeOrderMap;
+
+    public MilkShakeInfo() {
+        this.shakeOrderMap = new HashMap<>();
+    }
+
+    public Map<String, Double> getShakeOrderMap() {
+        return shakeOrderMap;
+    }
+
+    public void setShakeOrderMap(Map<String, Double> shakeOrderMap) {
+        this.shakeOrderMap = shakeOrderMap;
+    }
+
+    public double findTotalCostOfMilkShakeOrder() {
+        double totalCost = 0;
+        for (double price : shakeOrderMap.values()) {
+            totalCost += price;
+        }
+        return totalCost;
+    }
+
+    public List<String> filterMilkShakeOrderForGivenPriceRange(double start, double end) {
+        List<String> filteredMilkShakes = new ArrayList<>();
+        for (Map.Entry<String, Double> entry : shakeOrderMap.entrySet()) {
+            if (entry.getValue() >= start && entry.getValue() <= end) {
+                filteredMilkShakes.add(entry.getKey());
+            }
+        }
+        return filteredMilkShakes;
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        MilkShakeInfo milkShakeInfo = new MilkShakeInfo();
+
+        System.out.println("Enter the number of milkshake order to be added");
+        int n = scanner.nextInt();
+        scanner.nextLine(); // consume newline
+
+        for (int i = 0; i < n; i++) {
+            System.out.println("Enter the milkshake details (milkshake:price)");
+            String[] details = scanner.nextLine().split(":");
+            milkShakeInfo.getShakeOrderMap().put(details[0].toLowerCase(), Double.parseDouble(details[1]));
+        }
+
+        double totalCost = milkShakeInfo.findTotalCostOfMilkShakeOrder();
+        System.out.println("The total cost of the milkshake purchase is $" + totalCost);
+
+        System.out.println("Enter the range to filter the milkshake order details");
+        double start = scanner.nextDouble();
+        double end = scanner.nextDouble();
+
+        List<String> filteredMilkShakes = milkShakeInfo.filterMilkShakeOrderForGivenPriceRange(start, end);
+        if (filteredMilkShakes.isEmpty()) {
+            System.out.println("There are no milkshakes in the price range of $" + start + " and $" + end);
+        } else {
+            System.out.println("Milkshake in the price range of $" + start + " and $" + end + " are");
+            for (String milkShake : filteredMilkShakes) {
+                System.out.println(milkShake);
+            }
+        }
+    }
+}
