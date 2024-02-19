@@ -1,0 +1,289 @@
+********************************************************************************************************
+                                      Passengers based on Activation Date
+********************************************************************************************************
+select c.customer_id, b.bank_name , b.branch_name , b.ifsc_code , a.registration_date , a.activation_date
+from customer_reference_info c
+inner join account_info a on
+c.customer_id = a.customer_id
+inner join bank_info b on
+a.ifsc_code = b.ifsc_code
+where month(a.activation_date)=3
+order by c.customer_id asc;
+
+*********************************************************************************************************
+                                     LAST MINUTE PASSENGERS
+*********************************************************************************************************
+select pass_name,flight_name 
+from flight_details f,booking b,booking_details bd,passengers p 
+where f.flight_id=b.flight_id and b.booking_id=bd.booking_id
+and p.pass_id=bd.pass_id 
+and flight_date=booking_date 
+order by pass_name desc;
+
+
+**********************************************************************************************************
+                             Removing Keys from Map
+**********************************************************************************************************
+****MAIN CLASS****
+
+import java.util.Scanner;
+import java.util.HashMap;
+
+public class Main{
+
+	public static void main(String args[])
+	{
+
+		Scanner sc=new Scanner(System.in);
+
+		int size = sc.nextInt();
+
+		HashMap<Integer,String> hm = new HashMap<Integer,String>();
+
+		for(int i=0 ; i<size ; i++)
+		{
+			int key = sc.nextInt();
+			sc.nextLine();
+			String value = sc.nextLine();
+
+			hm.put(key,value);
+		}
+
+		System.out.println(UserMainCode.sizeOfResultandHashMap(hm));
+
+	}
+}
+
+
+****USERINTERFACE*****
+
+import java.util.HashMap;
+
+public class UserMainCode {
+    
+    public static int sizeOfResultandHashMap(HashMap<Integer,String> hm) {
+        
+        //fill the code
+        hm.entrySet().removeIf(entry -> entry.getKey() %4 == 0);
+        return hm.size();
+    
+    }
+    
+}
+
+
+
+***************************************************************************************************
+                                     HAMLEYS TOY SHOP
+***************************************************************************************************
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
+
+public class ToyOrderMain {
+	private Map<String,Integer> toyMap = new HashMap<String,Integer>();
+	
+	public Map<String, Integer> getToyMap() {
+		return toyMap;
+	}
+
+	public void setToyMap(Map<String, Integer> toyMap) {
+		this.toyMap = toyMap;
+	}
+
+	public int findQuantity(String toyName) {
+		// Fill the code
+	int count=0;
+		for(Map.Entry<String, Integer> entry : toyMap.entrySet()){
+		    if(entry.getKey().equalsIgnoreCase(toyName)){
+		        count=entry.getValue();
+		    }
+		}
+		if(count==0){
+		    return -1;
+		}
+		return count;
+	}
+	
+	public List<String> findToysBasedOnTheGivenQuantity(int quantity){
+		// Fill the code
+	List<String> res = new ArrayList<>();
+		for(Map.Entry<String, Integer> entry : toyMap.entrySet()){
+		    if(entry.getValue()<=quantity){
+		        res.add(entry.getKey());
+		    }
+		}
+		return res;
+	
+	}
+
+	/**
+	 * @param args
+	 */
+	public static void main(String args[]) {
+		ToyOrderMain toyObj= new ToyOrderMain();
+		
+		Scanner sc = new Scanner(System.in);
+		
+		Map<String,Integer> sMap = new HashMap<String,Integer>();
+		
+		System.out.println("Enter number of records to be added");
+		int n = Integer.parseInt(sc.nextLine());
+		
+		System.out.println("Enter the toy details(toyName: quantity)");
+		for(int i=0;i<n;i++) {
+			String s = sc.nextLine();
+			String[] strArr = s.split(":");
+			sMap.put(strArr[0], Integer.parseInt(strArr[1]));
+		}
+		toyObj.setToyMap(sMap);
+		
+		System.out.println("Enter the toy name to be searched");
+		String toyName= sc.nextLine();
+		int qty=toyObj.findQuantity(toyName);
+		if(qty!=-1)
+			System.out.println("Order placed for "+qty+" "+toyName );
+		else
+			System.out.println(toyName+" is an invalid toy name");
+		System.out.println("Enter the quantity to filter the toys");
+		int minQty = sc.nextInt();
+		List<String> minList = toyObj.findToysBasedOnTheGivenQuantity(minQty);
+		if(minList.size()!=0)
+		{
+			System.out.println("Toys that will be delivered on the same day are");
+			for(String s:minList)
+				System.out.println(s);
+		}
+		else
+			System.out.println("No toys were found for the given quantity");
+		}
+		
+	}
+
+
+
+******************************************************************************************************************
+
+                                       UNLOCK TO FUTURE
+******************************************************************************************************************
+
+****LOCK****
+
+import java.util.Arrays;
+
+public class Lock {
+
+	private String lockModel;
+	private int codeLength;
+	private int[] code;
+	private String lockState;
+
+
+	public Lock(String lockModel,int codeLength, int[] code, String lockState) {
+		super();
+		this.lockModel=lockModel;
+		this.codeLength = codeLength;
+		this.code = code;
+		this.lockState = lockState;
+	}
+
+	public String getLockModel() {
+		return lockModel;
+	}
+
+	public void setLockModel(String lockModel) {
+		this.lockModel = lockModel;
+	}
+
+	public int getCodeLength() {
+		return codeLength;
+	}
+
+	public void setCodeLength(int codeLength) {
+		this.codeLength = codeLength;
+	}
+
+	public int[] getCode() {
+		return code;
+	}	 	  	  	 		  	     	      	 	
+
+	public void setCode(int[] code) {
+		this.code = code;
+	}
+
+	public String getLockState() {
+		return lockState;
+	}
+
+	public void setLockState(String lockState) {
+		this.lockState = lockState;
+	}
+
+
+	public String enterCodeToUnlock(int[] codeAttempts) {
+	
+		//  Fill the code here 
+		int count =0;
+		if(lockState.equalsIgnoreCase("locked")){
+		    for(int i=0;i<codeAttempts.length;i++){
+		        if(codeAttempts[i] == code[i]) {
+		           count++;
+		        }
+		    }
+		    if(count == codeAttempts.length){
+		         setLockState("unlocked");
+		         return "Code correct. Lock is now unlocked.";
+		    }
+		    else
+		        return "Incorrect code. Please try again.";
+		}
+		else
+		    return "Lock is already unlocked.";
+// 		return null;
+	}
+}	 	  	  	 		  	     	      	 	
+
+
+
+******USER INTERFACE******
+
+import java.util.Scanner;
+
+public class UserInterface {
+
+	public static Lock extractDetails(String lockDetails) {
+        //Fill the code here
+	    String[] s = lockDetails.split(":");
+	    int[] code = new int[Integer.parseInt(s[1])];
+	    for(int i=0;i<code.length;i++)
+	        code[i] = Integer.parseInt(s[i+2]);
+	    Lock l = new Lock(s[0],Integer.parseInt(s[1]),code,s[s.length-1]);
+		return l;
+		
+	}	
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		//Fill the code here 
+		System.out.println("Enter the details");
+		String s = sc.nextLine();
+		Lock lock = extractDetails(s);
+		System.out.println("Enter the code attempts of length "+lock.getCodeLength());
+		int len = lock.getCodeLength();
+		int codeAtt[] = new int[len];
+		for(int i=0;i<len;i++)
+		    codeAtt[i] = sc.nextInt();
+		String res = lock.enterCodeToUnlock(codeAtt);
+		if(res.contains("Lock correct")){
+    		System.out.println("Lock Model: "+lock.getLockModel());
+    		System.out.println("Code Length: "+lock.getCodeLength());
+    		System.out.println("Lock state: "+lock.getLockState());
+    		System.out.println(res);
+		}
+		else
+		    	System.out.println(res);
+	}
+}	 	  	  	 		  	     	      	 	
+
